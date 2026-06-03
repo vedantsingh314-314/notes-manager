@@ -1,5 +1,5 @@
 const express = require("express");
-
+const Note=require('./models/note.model.js');
 const fs = require("fs");
 
 const app = express();
