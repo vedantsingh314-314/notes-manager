@@ -83,4 +83,27 @@ router.put("/notes/:id", (req, res) => {
       error: "Something went wrong",
   });
 }});
+router.delete("/notes/:id", (req, res) => {
+  try {
+    const { id } = req.params; 
+    const data=fs.readFileSync("notes.json", "utf-8");
+    const notes=JSON.parse(data);
+    const ispresent=notes.find(notes=>notes.id===id);
+    if(!ispresent){
+        return res.status(404).json({
+            error: "the id is not present",
+        });
+    } 
+    const filteredNotes=notes.filter(notes=>notes.id!==id);
+    fs.writeFileSync("notes.json", JSON.stringify(filteredNotes, null, 2));
+    return res.status(200).json({
+        message: "Note deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: "Something went wrong",
+    });
+  }
+});
 module.exports=router;
